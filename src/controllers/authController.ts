@@ -1,0 +1,26 @@
+import { Request, Response } from "express";
+import * as authService from "../services/authService";
+import { signupSchema, loginSchema } from "../utils/validations";
+import { AppError } from "../utils/AppError";
+
+export async function signupController(req: Request, res: Response) {
+    const parsed = signupSchema.safeParse(req.body);
+    if (!parsed.success) {
+        throw new AppError(parsed.error.errors[0].message, 400);
+    }
+
+    const result = await authService.signup(parsed.data);
+
+    res.status(201).json(result);
+}
+
+export async function loginController(req: Request, res: Response) {
+    const parsed = loginSchema.safeParse(req.body);
+    if (!parsed.success) {
+        throw new AppError(parsed.error.errors[0].message, 400);
+    }
+
+    const result = await authService.login(parsed.data);
+    res.status(200)
+        .json(result);
+}
