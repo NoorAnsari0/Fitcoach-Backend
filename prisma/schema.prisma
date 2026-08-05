@@ -21,5 +21,19 @@ model User {
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
 
+    habits HabitEntry[]
+
     @@map("users")
+}
+
+model HabitEntry {
+  id String @id @default(uuid())
+  userId String
+  user User @relation(fields: [userId], references: [id],  onDelete: Cascade)
+  title String
+  date DateTime @default(now())
+  completed Boolean @default(false)
+  createdAt DateTime @default(now())
+
+  @@map("habit_entries")
 }
