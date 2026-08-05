@@ -27,6 +27,9 @@ export async function loginController(req: Request, res: Response) {
 }
 
 export async function meController(req: AuthRequest, res: Response) {
-    const profile = await authService.getProfile(req.userId as string);
+    if (!req.userId) {
+        throw new AppError("Not Authenticated", 401)
+    }
+    const profile = await authService.getProfile(req.userId);
     res.status(200).json(profile);
 }
