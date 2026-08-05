@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import * as authService from "../services/authService";
 import { signupSchema, loginSchema } from "../utils/validations";
 import { AppError } from "../utils/AppError";
+import { AuthRequest } from "../middleware/requireAuth";
 
 export async function signupController(req: Request, res: Response) {
     const parsed = signupSchema.safeParse(req.body);
@@ -23,4 +24,9 @@ export async function loginController(req: Request, res: Response) {
     const result = await authService.login(parsed.data);
     res.status(200)
         .json(result);
+}
+
+export async function meController(req: AuthRequest, res: Response) {
+    const profile = await authService.getProfile(req.userId as string);
+    res.status(200).json(profile);
 }
