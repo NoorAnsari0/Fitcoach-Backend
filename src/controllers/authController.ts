@@ -12,7 +12,11 @@ export async function signupController(req: Request, res: Response) {
 
     const result = await authService.signup(parsed.data);
 
-    res.status(201).json(result);
+    res.status(201).json({
+        success: true,
+        data: result
+
+    });
 }
 
 export async function loginController(req: Request, res: Response) {
