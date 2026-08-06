@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import authRoutes from "../../Fitcoach-Backend/src/routes/authRoutes";
+import habitRoutes from "../../Fitcoach-Backend/src/routes/habitROutes";
 import {errorHandler} from "../src/middleware/errorHandler";
 
 const app = express();
@@ -16,6 +17,7 @@ app.get("/api/health", (_req, res) => {
 
 
 app.use("/api/auth", authRoutes);
+app.use("/api/habits", habitRoutes);
 
 app.use(errorHandler)
 app.listen(PORT, () => {
