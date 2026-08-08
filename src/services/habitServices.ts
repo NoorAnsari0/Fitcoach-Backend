@@ -41,6 +41,26 @@ export async function updateHabit(userId: string, habitId: string, input: update
             completed: input.completed
         }
     });
-    
+
     return updated;
+}
+
+export async function deleteHabit(userId: string, habitId: string) {
+    const habit = await prisma.habitEntry.findUnique({
+        where: { id: habitId }
+    })
+
+    if (!habit) {
+        throw new AppError("Habit not found", 404);
+    }
+
+    if (habit.userId !== userId) {
+        throw new AppError("Not authorized to delete this habit", 403);
+    }
+
+    await prisma.habitEntry.delete({
+        where: { id: habitId }
+    });
+
+    return { id: habitId };
 }

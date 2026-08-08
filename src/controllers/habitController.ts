@@ -57,3 +57,15 @@ export async function updateHabitController(req: AuthRequest, res: Response) {
         }
     })
 }
+
+export async function deleteHabitController(req: AuthRequest, res: Response) {
+    if (!req.userId) {
+        throw new AppError("Not authorized", 401);
+    }
+
+    const result = await habitService.deleteHabit(req.userId, req.params.id);
+    return res.status(200).json({
+        success: true,
+        message: "Habit deleted successfully"
+    })
+}
